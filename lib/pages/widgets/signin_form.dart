@@ -11,28 +11,16 @@ class SignInSheet extends StatelessWidget {
   SignInSheet({Key? key, required this.user}) : super(key: key);
   final User user;
 
-  final _passwordController = TextEditingController();
   final _cameraService = locator<CameraService>();
 
   Future _signIn(context, user) async {
-    if (user.password == _passwordController.text) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => Profile(
-                    user.user,
-                    imagePath: _cameraService.imagePath!,
-                  )));
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text('Wrong password!'),
-          );
-        },
-      );
-    }
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => Profile(
+                  user.user,
+                  imagePath: _cameraService.imagePath!,
+                )));
   }
 
   @override
@@ -49,27 +37,23 @@ class SignInSheet extends StatelessWidget {
               style: TextStyle(fontSize: 20),
             ),
           ),
+          SizedBox(height:10,),
           Container(
             child: Column(
               children: [
-                SizedBox(height: 10),
-                AppTextField(
-                  controller: _passwordController,
-                  labelText: "Password",
-                  isPassword: true,
-                ),
-                SizedBox(height: 10),
-                Divider(),
-                SizedBox(height: 10),
-                AppButton(
-                  text: 'LOGIN',
-                  onPressed: () async {
-                    _signIn(context, user);
-                  },
-                  icon: Icon(
-                    Icons.login,
-                    color: Colors.white,
-                  ),
+                Row(
+                  children: [
+                    AppButton(
+                      text: 'LOGIN',
+                      onPressed: () async {
+                        _signIn(context, user);
+                      },
+                      icon: Icon(
+                        Icons.login,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 )
               ],
             ),

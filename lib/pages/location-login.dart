@@ -76,7 +76,7 @@ class _LocationLoginState extends State<LocationLogin> {
                               MaterialPageRoute(
                                   builder: (BuildContext context) => Profile(
                                         value.user,
-                                        imagePath: value.modelData[0],
+                                        imagePath: value.image,
                                       )))
                           : showDialog(
                               context: context,

@@ -41,32 +41,34 @@ class _AuthActionButtonState extends State<AuthActionButton> {
     List predictedData = _mlService.predictedData;
     String user = _userTextEditingController.text;
     String password = _passwordTextEditingController.text;
+
+
     User userToSave = User(
       user: user,
       password: password,
-      modelData: predictedData,
+      modelData: predictedData, image:_cameraService.imagePath!,
     );
     await _databaseHelper.insert(userToSave);
-    this._mlService.setPredictedData([]);
+    _mlService.setPredictedData([]);
     Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => MyHomePage()));
   }
 
   Future _signIn(context) async {
     String password = _passwordTextEditingController.text;
-    if (this.predictedUser!.password == password) {
+    if (predictedUser!.password == password) {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => Profile(
-                    this.predictedUser!.user,
+                    predictedUser!.user,
                     imagePath: _cameraService.imagePath!,
                   )));
     } else {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
+          return const AlertDialog(
             content: Text('Wrong password!'),
           );
         },
@@ -86,7 +88,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
         if (widget.isLogin) {
           var user = await _predictUser();
           if (user != null) {
-            this.predictedUser = user;
+            predictedUser = user;
           }
         }
         PersistentBottomSheetController bottomSheetController =
@@ -111,17 +113,17 @@ class _AuthActionButtonState extends State<AuthActionButton> {
             BoxShadow(
               color: Colors.blue.withOpacity(0.1),
               blurRadius: 1,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         width: MediaQuery.of(context).size.width * 0.8,
         height: 60,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             Text(
               'CAPTURE',
               style: TextStyle(color: Colors.white),
@@ -138,7 +140,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
 
   signSheet(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,61 +149,58 @@ class _AuthActionButtonState extends State<AuthActionButton> {
               ? Container(
                   child: Text(
                     'Welcome back, ' + predictedUser!.user + '.',
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
                 )
               : widget.isLogin
-                  ? Container(
-                      child: Text(
-                      'User not found 😞',
-                      style: TextStyle(fontSize: 20),
-                    ))
+                  ? const Text(
+                  'User not found 😞',
+                  style: TextStyle(fontSize: 20),
+                    )
                   : Container(),
-          Container(
-            child: Column(
-              children: [
-                !widget.isLogin
-                    ? AppTextField(
-                        controller: _userTextEditingController,
-                        labelText: "Your Name",
-                      )
-                    : Container(),
-                SizedBox(height: 10),
-                widget.isLogin && predictedUser == null
-                    ? Container()
-                    : AppTextField(
-                        controller: _passwordTextEditingController,
-                        labelText: "Password",
-                        isPassword: true,
+          Column(
+            children: [
+              !widget.isLogin
+                  ? AppTextField(
+                      controller: _userTextEditingController,
+                      labelText: "Your Name",
+                    )
+                  : Container(),
+              const SizedBox(height: 10),
+              widget.isLogin && predictedUser == null
+                  ? Container()
+                  : AppTextField(
+                      controller: _passwordTextEditingController,
+                      labelText: "Password",
+                      isPassword: true,
+                    ),
+              const SizedBox(height: 10),
+              const Divider(),
+              const SizedBox(height: 10),
+              widget.isLogin && predictedUser != null
+                  ? AppButton(
+                      text: 'LOGIN',
+                      onPressed: () async {
+                        _signIn(context);
+                      },
+                      icon: const Icon(
+                        Icons.login,
+                        color: Colors.white,
                       ),
-                SizedBox(height: 10),
-                Divider(),
-                SizedBox(height: 10),
-                widget.isLogin && predictedUser != null
-                    ? AppButton(
-                        text: 'LOGIN',
-                        onPressed: () async {
-                          _signIn(context);
-                        },
-                        icon: Icon(
-                          Icons.login,
-                          color: Colors.white,
-                        ),
-                      )
-                    : !widget.isLogin
-                        ? AppButton(
-                            text: 'SIGN UP',
-                            onPressed: () async {
-                              await _signUp(context);
-                            },
-                            icon: Icon(
-                              Icons.person_add,
-                              color: Colors.white,
-                            ),
-                          )
-                        : Container(),
-              ],
-            ),
+                    )
+                  : !widget.isLogin
+                      ? AppButton(
+                          text: 'SIGN UP',
+                          onPressed: () async {
+                            await _signUp(context);
+                          },
+                          icon: const Icon(
+                            Icons.person_add,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Container(),
+            ],
           ),
         ],
       ),
