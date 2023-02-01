@@ -3,6 +3,7 @@ import 'package:untitled1/pages/profile.dart';
 import 'package:untitled1/pages/widgets/app_button.dart';
 import 'package:untitled1/pages/widgets/app_text_field.dart';
 
+import '../services/location.dart';
 import 'db/databse_helper.dart';
 import 'models/user.model.dart';
 
@@ -69,8 +70,17 @@ class _LocationLoginState extends State<LocationLogin> {
                     text: 'LOGIN',
                     onPressed: () async {
                       final value = await locationLogin();
+                     final isLocated= await checkStaticLocation();
                       if (!mounted) return;
-                      value != null
+                      if (!isLocated) {showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const AlertDialog(
+                            content: Text('Location is not right'),
+                          );
+                        },
+                      );} else {
+                        value != null
                           ? Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -86,6 +96,7 @@ class _LocationLoginState extends State<LocationLogin> {
                                 );
                               },
                             );
+                      }
                     },
                     icon: const Icon(
                       Icons.login,
