@@ -4,7 +4,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-
 import '../models/user.model.dart';
 
 class DatabaseHelper {
@@ -58,5 +57,15 @@ class DatabaseHelper {
   Future<int> deleteAll() async {
     Database db = await instance.database;
     return await db.delete(table);
+  }
+
+  Future<User?> findUser(String username, String password) async {
+    final db = await database;
+    final result = await db.query(
+      table,
+      where: '$columnUser = ? AND $columnPassword = ?',
+      whereArgs: [username, password],
+    );
+    return result.isNotEmpty ? User.fromMap(result.first) : null;
   }
 }

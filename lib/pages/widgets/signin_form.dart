@@ -1,13 +1,11 @@
+import 'package:flutter/material.dart';
+
 import '../../locator.dart';
 import '../../services/camera.service.dart';
-import '../../services/ml_service.dart';
-import '../db/databse_helper.dart';
-import '../home.dart';
 import '../models/user.model.dart';
 import '../profile.dart';
 import 'app_button.dart';
 import 'app_text_field.dart';
-import 'package:flutter/material.dart';
 
 class SignInSheet extends StatelessWidget {
   SignInSheet({Key? key, required this.user}) : super(key: key);

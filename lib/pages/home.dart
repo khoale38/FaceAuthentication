@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled1/pages/sign-in.dart';
 import 'package:untitled1/pages/sign-up.dart';
+
 import '../../locator.dart';
 import '../../services/camera.service.dart';
 import '../../services/ml_service.dart';
-
 import '../services/face_detector_service.dart';
 import 'db/databse_helper.dart';
+import 'location-login.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -77,7 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: Column(
@@ -108,7 +107,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) => const SignIn(),
+                                  builder: (BuildContext context) =>
+                                      const SignIn(),
                                 ),
                               );
                             },
@@ -151,7 +151,52 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) => const SignUp(),
+                                  builder: (BuildContext context) =>
+                                      const SignUp(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.green,
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                    color: Colors.green.withOpacity(0.1),
+                                    blurRadius: 1,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 14, horizontal: 16),
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text(
+                                    'SIGN UP',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(Icons.person_add, color: Colors.white)
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BLocationLoginontext) =>
+                                      const LocationLogin(),
                                 ),
                               );
                             },
@@ -175,13 +220,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [
                                   Text(
-                                    'SIGN UP',
+                                    'LOCATION LOGIN',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Icon(Icons.person_add, color: Colors.white)
+                                  Icon(Icons.add_business_sharp,
+                                      color: Colors.white)
                                 ],
                               ),
                             ),
