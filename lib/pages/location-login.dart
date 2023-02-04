@@ -20,7 +20,12 @@ class _LocationLoginState extends State<LocationLogin> {
   final TextEditingController _passwordTextEditingController =
       TextEditingController(text: '');
 
+  var checkingLocation =false;
+
   Future<User?> locationLogin() async {
+    setState(() {
+      checkingLocation =true;
+    });
     DatabaseHelper _dataBaseHelper = DatabaseHelper.instance;
     final user = await _dataBaseHelper.findUser(
         _userTextEditingController.value.text,
@@ -35,7 +40,23 @@ class _LocationLoginState extends State<LocationLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+     appBar: AppBar( leading: IconButton(
+       icon: Icon(Icons.arrow_back, color: Colors.black),
+       onPressed: () => Navigator.of(context).pop(),
+     ),),
+      body: checkingLocation? Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              CircularProgressIndicator(),
+              SizedBox(height :10,),
+              Text('Please wait',style:TextStyle(fontSize: 24,fontWeight: FontWeight.bold))
+            ],
+          ),
+        ],
+      ) : Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -80,22 +101,31 @@ class _LocationLoginState extends State<LocationLogin> {
                           );
                         },
                       );} else {
-                        value != null
-                          ? Navigator.push(
+
+                        if(value != null) {
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) => Profile(
                                         value.user,
                                         imagePath: value.image,
-                                      )))
-                          : showDialog(
+                                      )));
+
+                        } else {
+                          setState(() {
+                            checkingLocation=false;
+                          });
+                          showDialog(
                               context: context,
                               builder: (context) {
+
                                 return const AlertDialog(
                                   content: Text('No User found!'),
                                 );
                               },
                             );
+                        }
+
                       }
                     },
                     icon: const Icon(

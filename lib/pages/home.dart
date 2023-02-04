@@ -195,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (BLocationLoginontext) =>
+                                  builder: (context) =>
                                       const LocationLogin(),
                                 ),
                               );
